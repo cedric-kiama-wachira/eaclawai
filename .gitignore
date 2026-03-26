@@ -1,0 +1,11 @@
+# Private key — never commit
+certificates/*.key
+certificates/*.pem
+
+# OS
+.DS_Store
+*.swp
+
+# Secrets
+*.env
+.env*
