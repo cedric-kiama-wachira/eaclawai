@@ -1,0 +1,22 @@
+# Global fallback
+*                          @cedric-kiama-wachira
+
+# Platform Engineering (TLS, DNS, infra configs)
+/platform/                 @cedric-kiama-wachira
+/certificates/             @cedric-kiama-wachira
+
+# SRE / DevOps
+/sre/                      @cedric-kiama-wachira
+
+# ML / Data Science
+/ml/                       @cedric-kiama-wachira
+
+# Data Engineering
+/data/                     @cedric-kiama-wachira
+
+# Application layer
+/apps/                     @cedric-kiama-wachira
+
+# Docs & EPICs
+*.md                       @cedric-kiama-wachira
+/docs/                     @cedric-kiama-wachira
