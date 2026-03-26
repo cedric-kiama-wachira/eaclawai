@@ -1,6 +1,6 @@
 # Private key — never commit
-certificates/*.key
-certificates/*.pem
+platform/certificates/*.key
+platform/certificates/*.pem
 
 # OS
 .DS_Store
