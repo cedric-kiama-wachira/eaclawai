@@ -9,3 +9,7 @@ platform/certificates/*.pem
 # Secrets
 *.env
 .env*
+
+# Archi tool temp files
+*.archimate.bak
+.archimate-lock
