@@ -1,0 +1,156 @@
+// generate-sads-ARCHI58.ajs
+// REAL jArchi 1.11.0 for Archi 5.8.0
+// Uses $ selector syntax (correct API)
+
+const fs = Java.type("java.nio.file.Files");
+const Paths = Java.type("java.nio.file.Paths");
+const StandardOpenOption = Java.type("java.nio.file.StandardOpenOption");
+
+const OUTPUT_DIR = "/home/infrastructure-and-security/eaclawAI/docs/architecture/sads/";
+const TODAY = new java.text.SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+function ensureOutputDir() {
+    try {
+        const path = Paths.get(OUTPUT_DIR);
+        if (!fs.exists(path)) {
+            fs.createDirectories(path);
+        }
+        return true;
+    } catch (e) {
+        console.error("❌ Cannot create directory: " + e.message);
+        return false;
+    }
+}
+
+function writeFile(filename, content) {
+    try {
+        const path = Paths.get(OUTPUT_DIR + filename);
+        const bytes = content.getBytes("UTF-8");
+        fs.write(path, bytes,
+            StandardOpenOption.CREATE,
+            StandardOpenOption.WRITE,
+            StandardOpenOption.TRUNCATE_EXISTING
+        );
+        return true;
+    } catch (e) {
+        console.error("❌ Error writing " + filename + ": " + e.message);
+        return false;
+    }
+}
+
+function getSADNumber(name) {
+    if (!name) return null;
+    const match = name.match(/SAD-(\d+)/);
+    return match ? parseInt(match[1]) : null;
+}
+
+function getSADTitle(name) {
+    if (!name) return "";
+    return name.replace(/SAD-\d+:\s*/, "").trim();
+}
+
+function generateSADMarkdown(sadNum, sadTitle) {
+    let md = `# SAD-${String(sadNum).padStart(3, '0')}: ${sadTitle}\n\n`;
+    
+    md += `**Solution:** ${sadTitle}\n`;
+    md += `**Phase:** 1–2\n`;
+    md += `**Author:** Cedric (Lead AI Enterprise Architect)\n`;
+    md += `**Date:** ${TODAY}\n\n`;
+    
+    md += `---\n\n`;
+    md += `## Executive Summary\n\n[Solution overview]\n\n`;
+    md += `## Views & Perspectives\n\n### View 1: Logical Architecture\n[Logical components]\n\n`;
+    md += `## Technology Stack\n\n[Implementation details]\n\n`;
+    md += `## Success Criteria\n\n- [ ] [Success metric 1]\n- [ ] [Success metric 2]\n\n`;
+    md += `---\n\n`;
+    md += `**Document Owner:** Cedric (Lead AI Enterprise Architect)\n`;
+    md += `**Source:** AARM.archimate v2.3\n`;
+    md += `**Auto-Generated:** ${TODAY}\n`;
+    
+    return md;
+}
+
+console.log("\n=== jArchi: Extracting SADs from AARM Model ===\n");
+
+if (!ensureOutputDir()) exit();
+
+// Use $ selector to find all elements named SAD-*
+console.log("Searching for SAD elements in model...\n");
+
+const sadElements = [];
+
+// Get all elements with $ selector
+try {
+    const allElements = $("*");
+    console.log(`✓ Found ${allElements.length} total elements`);
+    
+    for (let i = 0; i < allElements.length; i++) {
+        const el = allElements[i];
+        const name = el.name || "";
+        
+        if (name && name.match(/^SAD-\d+/)) {
+            sadElements.push({
+                name: name,
+                element: el
+            });
+            console.log(`  SAD found: ${name}`);
+        }
+    }
+} catch (e) {
+    console.error("❌ Error using $ selector: " + e);
+    exit();
+}
+
+if (sadElements.length === 0) {
+    console.warn("\n⚠️  No SAD elements found");
+}
+
+console.log(`\n✓ Found ${sadElements.length} SAD elements\n`);
+
+// Sort by SAD number
+sadElements.sort((a, b) => getSADNumber(a.name) - getSADNumber(b.name));
+
+// Generate markdown for each SAD
+const generatedSADs = [];
+
+for (let i = 0; i < sadElements.length; i++) {
+    const sadData = sadElements[i];
+    const sadNum = getSADNumber(sadData.name);
+    const sadTitle = getSADTitle(sadData.name);
+    const filename = `SAD-${String(sadNum).padStart(3, '0')}-${sadTitle.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}.md`;
+    
+    const markdown = generateSADMarkdown(sadNum, sadTitle);
+    
+    if (writeFile(filename, markdown)) {
+        console.log(`✓ SAD-${String(sadNum).padStart(3, '0')}: ${sadTitle}`);
+        generatedSADs.push({
+            num: sadNum,
+            title: sadTitle,
+            file: filename
+        });
+    }
+}
+
+console.log(`\n✓ Generated ${generatedSADs.length} SADs`);
+
+// Generate index
+let index = `# AARM-EG Solution Architecture Documents\n\n`;
+index += `**Generated:** ${TODAY}\n`;
+index += `**Source:** AARM.archimate v2.3\n`;
+index += `**Total SADs:** ${generatedSADs.length}\n\n`;
+index += `## Index\n\n`;
+index += `| SAD | Title |\n`;
+index += `|-----|-------|\n`;
+
+for (let i = 0; i < generatedSADs.length; i++) {
+    const sad = generatedSADs[i];
+    index += `| SAD-${String(sad.num).padStart(3, '0')} | ${sad.title} |\n`;
+}
+
+index += `\n✅ SADs extracted from model\n`;
+
+if (writeFile("INDEX.md", index)) {
+    console.log("✓ Generated: INDEX.md");
+}
+
+console.log(`\n=== Complete ===\n✅ SADs extracted successfully\n`);

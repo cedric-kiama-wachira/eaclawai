@@ -1,0 +1,159 @@
+// generate-adrs-ARCHI58.ajs
+// REAL jArchi 1.11.0 for Archi 5.8.0
+// Uses $ selector syntax (correct API)
+
+const fs = Java.type("java.nio.file.Files");
+const Paths = Java.type("java.nio.file.Paths");
+const StandardOpenOption = Java.type("java.nio.file.StandardOpenOption");
+
+const OUTPUT_DIR = "/home/infrastructure-and-security/eaclawAI/docs/architecture/adrs/";
+const TODAY = new java.text.SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+function ensureOutputDir() {
+    try {
+        const path = Paths.get(OUTPUT_DIR);
+        if (!fs.exists(path)) {
+            fs.createDirectories(path);
+        }
+        return true;
+    } catch (e) {
+        console.error("❌ Cannot create directory: " + e.message);
+        return false;
+    }
+}
+
+function writeFile(filename, content) {
+    try {
+        const path = Paths.get(OUTPUT_DIR + filename);
+        const bytes = content.getBytes("UTF-8");
+        fs.write(path, bytes,
+            StandardOpenOption.CREATE,
+            StandardOpenOption.WRITE,
+            StandardOpenOption.TRUNCATE_EXISTING
+        );
+        return true;
+    } catch (e) {
+        console.error("❌ Error writing " + filename + ": " + e.message);
+        return false;
+    }
+}
+
+function getADRNumber(name) {
+    if (!name) return null;
+    const match = name.match(/ADR-(\d+)/);
+    return match ? parseInt(match[1]) : null;
+}
+
+function getADRTitle(name) {
+    if (!name) return "";
+    return name.replace(/ADR-\d+:\s*/, "").trim();
+}
+
+function generateADRMarkdown(adrNum, adrTitle) {
+    let md = `# ADR-${String(adrNum).padStart(3, '0')}: ${adrTitle}\n\n`;
+    
+    md += `**Date:** ${TODAY}\n`;
+    md += `**Status:** Accepted\n`;
+    md += `**Decider:** Roberto (Head of AI, FAB), Cedric (Lead AI Enterprise Architect)\n`;
+    md += `**Stakeholders:** Platform, Security, Compliance\n\n`;
+    
+    md += `---\n\n`;
+    md += `## Context\n\n[Decision context from AARM model]\n\n`;
+    md += `## Decision\n\n${adrTitle}.\n\n`;
+    md += `## Consequences\n\n### Positive\n✅ [Benefits]\n\n### Negative\n⚠️ [Trade-offs]\n\n`;
+    md += `## Implementation Evidence\n\nSee related SADs.\n\n`;
+    md += `## Related Decisions\n\nExtracted from AARM.archimate v2.3\n\n`;
+    md += `---\n\n`;
+    md += `**Document Owner:** Cedric (Lead AI Enterprise Architect)\n`;
+    md += `**Source:** AARM.archimate v2.3\n`;
+    md += `**Auto-Generated:** ${TODAY}\n`;
+    
+    return md;
+}
+
+console.log("\n=== jArchi: Extracting ADRs from AARM Model ===\n");
+
+if (!ensureOutputDir()) exit();
+
+// Use $ selector to find all elements named ADR-*
+console.log("Searching for ADR elements in model...\n");
+
+const adrElements = [];
+
+// Get all elements with $ selector
+try {
+    const allElements = $("*");
+    console.log(`✓ Found ${allElements.length} total elements`);
+    
+    for (let i = 0; i < allElements.length; i++) {
+        const el = allElements[i];
+        const name = el.name || "";
+        
+        if (name && name.match(/^ADR-\d+/)) {
+            adrElements.push({
+                name: name,
+                element: el
+            });
+            console.log(`  ADR found: ${name}`);
+        }
+    }
+} catch (e) {
+    console.error("❌ Error using $ selector: " + e);
+    exit();
+}
+
+if (adrElements.length === 0) {
+    console.error("\n⚠️  No ADR elements found");
+    console.error("   Check that ADR elements are named: 'ADR-001: Title'");
+    exit();
+}
+
+console.log(`\n✓ Found ${adrElements.length} ADR elements\n`);
+
+// Sort by ADR number
+adrElements.sort((a, b) => getADRNumber(a.name) - getADRNumber(b.name));
+
+// Generate markdown for each ADR
+const generatedADRs = [];
+
+for (let i = 0; i < adrElements.length; i++) {
+    const adrData = adrElements[i];
+    const adrNum = getADRNumber(adrData.name);
+    const adrTitle = getADRTitle(adrData.name);
+    const filename = `ADR-${String(adrNum).padStart(3, '0')}-${adrTitle.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}.md`;
+    
+    const markdown = generateADRMarkdown(adrNum, adrTitle);
+    
+    if (writeFile(filename, markdown)) {
+        console.log(`✓ ADR-${String(adrNum).padStart(3, '0')}: ${adrTitle}`);
+        generatedADRs.push({
+            num: adrNum,
+            title: adrTitle,
+            file: filename
+        });
+    }
+}
+
+console.log(`\n✓ Generated ${generatedADRs.length} ADRs`);
+
+// Generate Decision Log (index)
+let log = `# AARM-EG Decision Log\n\n`;
+log += `**Generated:** ${TODAY}\n`;
+log += `**Source:** AARM.archimate v2.3\n`;
+log += `**Total Decisions:** ${generatedADRs.length}\n\n`;
+log += `## Index\n\n`;
+log += `| ADR | Title |\n`;
+log += `|-----|-------|\n`;
+
+for (let i = 0; i < generatedADRs.length; i++) {
+    const adr = generatedADRs[i];
+    log += `| ADR-${String(adr.num).padStart(3, '0')} | ${adr.title} |\n`;
+}
+
+log += `\n✅ ADRs extracted from model\n`;
+
+if (writeFile("DECISION-LOG.md", log)) {
+    console.log("✓ Generated: DECISION-LOG.md");
+}
+
+console.log(`\n=== Complete ===\n✅ ADRs extracted successfully\n`);

@@ -1,0 +1,100 @@
+// debug-model-structure.ajs
+// DEBUG: Find out what's actually in the model - SAFE VERSION
+
+console.log("\n=== DEBUG: Inspecting AARM Model Structure ===\n");
+
+console.log("1. Check if model exists...");
+if (!model) {
+    console.error("ERROR: model is null/undefined");
+    exit();
+}
+console.log("✓ model exists");
+
+console.log("\n2. Check model properties...");
+try {
+    if (model.eClass && model.eClass.name) {
+        console.log("Model type: " + model.eClass.name);
+    } else {
+        console.log("⚠ model.eClass or eClass.name not available");
+    }
+} catch (e) {
+    console.log("⚠ Error reading model.eClass: " + e);
+}
+
+console.log("\n3. Try eContents()...");
+try {
+    const contents = model.eContents();
+    console.log("✓ model.eContents() works");
+    console.log("  Count: " + (contents ? contents.size() : "null"));
+    
+    if (contents && contents.size && contents.size() > 0) {
+        console.log("\n  Direct contents:");
+        for (let i = 0; i < Math.min(5, contents.size()); i++) {
+            try {
+                const item = contents.get(i);
+                const cname = item && item.eClass ? item.eClass.name : "?";
+                const iname = item && item.name ? item.name : "(no name)";
+                console.log(`    [${i}] ${cname}: ${iname}`);
+            } catch (e2) {
+                console.log(`    [${i}] Error: ` + e2);
+            }
+        }
+    }
+} catch (e) {
+    console.log("✗ model.eContents() failed: " + e);
+}
+
+console.log("\n4. Try eAllContents()...");
+try {
+    const allContents = model.eAllContents();
+    console.log("✓ model.eAllContents() works");
+    
+    let totalCount = 0;
+    let viewCount = 0;
+    let folderCount = 0;
+    let adrCount = 0;
+    let sadCount = 0;
+    let otherCount = 0;
+    
+    if (allContents) {
+        const iterator = allContents.iterator();
+        while (iterator.hasNext()) {
+            totalCount++;
+            const item = iterator.next();
+            
+            if (!item) continue;
+            
+            const className = item.eClass ? item.eClass.name : "Unknown";
+            const itemName = item.name ? item.name : "(no name)";
+            
+            if (className.includes("View") || className.includes("Diagram")) {
+                viewCount++;
+                if (viewCount <= 5) console.log(`  VIEW: ${className} - ${itemName}`);
+            } else if (className.includes("Folder")) {
+                folderCount++;
+                if (folderCount <= 5) console.log(`  FOLDER: ${className} - ${itemName}`);
+            } else if (itemName && itemName.match(/^ADR-\d+/)) {
+                adrCount++;
+                console.log(`  ADR: ${className} - ${itemName}`);
+            } else if (itemName && itemName.match(/^SAD-\d+/)) {
+                sadCount++;
+                console.log(`  SAD: ${className} - ${itemName}`);
+            } else {
+                otherCount++;
+            }
+        }
+    }
+    
+    console.log(`\n=== Summary ===`);
+    console.log(`Total contents: ${totalCount}`);
+    console.log(`Views/Diagrams: ${viewCount}`);
+    console.log(`Folders: ${folderCount}`);
+    console.log(`ADRs found: ${adrCount}`);
+    console.log(`SADs found: ${sadCount}`);
+    console.log(`Other: ${otherCount}`);
+    
+} catch (e) {
+    console.log("✗ model.eAllContents() failed: " + e);
+}
+
+console.log("\n✅ Debug complete\n");
