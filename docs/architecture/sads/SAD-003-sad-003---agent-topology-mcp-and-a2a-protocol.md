@@ -1,0 +1,32 @@
+# SAD-003: SAD-003 - Agent topology MCP and A2A protocol
+
+**Solution:** SAD-003 - Agent topology MCP and A2A protocol
+**Phase:** 1–2
+**Author:** Cedric (Lead AI Enterprise Architect)
+**Date:** 2026-04-03
+
+---
+
+## Executive Summary
+
+[Solution overview]
+
+## Views & Perspectives
+
+### View 1: Logical Architecture
+[Logical components]
+
+## Technology Stack
+
+[Implementation details]
+
+## Success Criteria
+
+- [ ] [Success metric 1]
+- [ ] [Success metric 2]
+
+---
+
+**Document Owner:** Cedric (Lead AI Enterprise Architect)
+**Source:** AARM.archimate v2.3
+**Auto-Generated:** 2026-04-03
