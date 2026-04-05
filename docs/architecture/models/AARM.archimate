@@ -1,7 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archimate:model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:archimate="http://www.archimatetool.com/archimate" name="AARM" id="id-13a49657bebf499cb81af96d47919ee1" version="5.0.0">
   <folder name="Strategy" id="id-6e10af25e7ca496ab69a6edefd584600" type="strategy">
-    <element xsi:type="archimate:Capability" name="CAP-01  Agentic AI Relationship Intelligence" id="id-1714711ed3fb472588c915ad3c08665c"/>
+    <element xsi:type="archimate:Capability" name="CAP-01  Agentic AI Relationship Intelligence" id="id-1714711ed3fb472588c915ad3c08665c">
+      <property key="element_type" value="capability"/>
+      <property key="traceability_id" value="CAP-01"/>
+      <property key="description" value="RM relationships enhanced by AI co-pilots generating insights, recommendations, and predictions in real-time during client interactions"/>
+      <property key="business_driver" value="Increase revenue per RM by 3-15%; Improve client experience; Enable RM to handle more clients"/>
+      <property key="related_courses_of_action" value="COA-01,COA-03"/>
+      <property key="related_resources" value="RES-01,RES-02,RES-03,RES-04,RES-05,RES-07"/>
+      <property key="enables_processes" value="PROC-RMBriefing,PROC-ClientInsights,PROC-RecommendationGeneration"/>
+      <property key="requires_applications" value="APP-ChainlitUI,APP-LangGraphOrch,APP-SGLangInference,APP-Mem0Memory,APP-VaultSecrets,APP-LangfuseObserv"/>
+      <property key="requires_technologies" value="FoundationModels,SGLang,LangGraph,Milvus,Langfuse,Vault,Keycloak,PostgreSQL,LLMGuard,Mem0,APISIX"/>
+      <property key="requires_adrs" value="ADR-003,ADR-004,ADR-006,ADR-008,ADR-009,ADR-010"/>
+      <property key="success_metrics" value="Revenue per RM: +3-15%; New AUM: +30-40%; Client NPS: +15 points; RM time to brief: 60% reduction"/>
+      <property key="phase" value="Phase 1,Phase 2"/>
+      <property key="phase_1_scope" value="Elite Gold segment only (50-100 clients); RM co-pilot basic (insights + recommendations)"/>
+      <property key="phase_2_scope" value="Expand to HNWI segment (500+ clients); Enhanced features (portfolio optimization, risk alerts)"/>
+      <property key="cost_estimate_phase1" value="$400/month infrastructure; $50K engineering (one-time)"/>
+      <property key="cost_estimate_phase2" value="$20K/month infrastructure (Azure); $100K engineering (scale)"/>
+      <property key="timeline" value="Phase 1: Q2-Q3 2026; Phase 2: Q4 2026 - Q1 2027"/>
+      <property key="dependencies" value="CAP-02 (Enterprise AI Governance must exist first); RES-01 (AI Innovation Hub must be staffed)"/>
+      <property key="risks" value="Model hallucination (mitigated by LLM Guard); Privacy leakage (mitigated by Vault PKI); RM adoption (mitigated by UX testing)"/>
+      <property key="version" value=" 2.0"/>
+      <property key="last_updated" value="2026-04-03"/>
+    </element>
     <element xsi:type="archimate:Capability" name="CAP-02  Enterprise AI Architecture Governance" id="id-d2dee14ebf764562baa5f18b957304e8"/>
     <element xsi:type="archimate:Capability" name="CAP-03  Real-Time Client Event Detection" id="id-3015532f93c645f7a8fa5a0c8994931f"/>
     <element xsi:type="archimate:Capability" name="CAP-04  MLOps and Model Lifecycle Management" id="id-3dc047a4dd754ca6b83ce01de6bada65"/>
@@ -22,7 +44,9 @@
     <element xsi:type="archimate:BusinessActor" name="Elite Gold Client (Ahmed)" id="id-0b66fa3223c641728ffcc1eb4a8d0f84"/>
     <element xsi:type="archimate:BusinessProcess" name="Manual client file review (20+ min per client)" id="id-d2073cc968ba4f95833963c8bc616ecb"/>
     <element xsi:type="archimate:BusinessProcess" name="Reactive lounge greeting - no context" id="id-00b13bda20b240e0a74af7cb748f0250"/>
-    <element xsi:type="archimate:BusinessProcess" name="Ad hoc follow-up - actions missed" id="id-ad366675443e48d9b4a298f178268f50"/>
+    <element xsi:type="archimate:BusinessProcess" name="Ad hoc follow-up - actions missed" id="id-ad366675443e48d9b4a298f178268f50">
+      <documentation>Current state: RMs manually follow up on missed client action items days or weeks later due to lack of systematic tracking</documentation>
+    </element>
     <element xsi:type="archimate:BusinessProcess" name="AI brief generated in under 60 seconds" id="id-6c304260781c42e6b7ed69308979f545"/>
     <element xsi:type="archimate:BusinessProcess" name="Lounge recognition - RM fully briefed on arrival" id="id-8cb83f955f15446a9fe4b5e9cc7d0f37"/>
     <element xsi:type="archimate:BusinessProcess" name="Automated follow-up and action capture" id="id-1ceae774a98840ca92b9b6904771bdb7"/>
@@ -292,6 +316,59 @@
     <element xsi:type="archimate:ServingRelationship" id="id-c255050212f2434db21af2b16d0f0bd7" source="id-4d759c354a1345c89b34ff74fd07e05b" target="id-e0620730413e4dde86d2faacd7c7e57c"/>
     <element xsi:type="archimate:ServingRelationship" id="id-c0416f09abb440c09ccd9ddce34aee24" source="id-e0620730413e4dde86d2faacd7c7e57c" target="id-93aebfb06c04464da161d05de9753d82"/>
     <element xsi:type="archimate:ServingRelationship" id="id-f12005e984864a2fb8d1d8f6cc7c678b" source="id-93aebfb06c04464da161d05de9753d82" target="id-b711b67748fd4a339e24ba14a9677bfa"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-1eaa892493d541aba911a618e97444bb" source="id-89b026e03d49409384d6bb78b1d3ca00" target="id-5317d912b1b04d7c96f498144cf195c5"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-0e6b1ea1de0d47479675b1578e3b8173" source="id-be6f1979a6ea4993a5aa2d79174f0976" target="id-5317d912b1b04d7c96f498144cf195c5"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-5e314316d4664514a593b3817d9b5a25" source="id-d5730e32461f42bca76887a45e725436" target="id-3a05118ff6c944b3a732ac6e8387c1d6"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-311982e6bf46436195d66498eb9bbcb9" source="id-5f7ad3fcd38b42cf8ed9ac7dfeaa2b94" target="id-3a05118ff6c944b3a732ac6e8387c1d6"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-0de31f4f788542f8ba5def3d6faeaa25" source="id-89b026e03d49409384d6bb78b1d3ca00" target="id-9bc546c9008a46bcb102a8ff4310528b"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-d97d992f204f49eea28cb730dd409f3e" source="id-be6f1979a6ea4993a5aa2d79174f0976" target="id-9bc546c9008a46bcb102a8ff4310528b"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-52525043c32b4e10bce61eabf808aa7b" source="id-d5730e32461f42bca76887a45e725436" target="id-f0234489da164dba8b883be8994e62ca"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-43e03e9f932f4b6687dfb8a4f9331aa3" source="id-5f7ad3fcd38b42cf8ed9ac7dfeaa2b94" target="id-f0234489da164dba8b883be8994e62ca"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-410ca345e555471f980125477d49ac8c" source="id-e00ab4a9ab054bef980fcee15e0fb05c" target="id-b8da48dc656743d899908b39b7580d7e"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-29fcf264219a4144a42b6a9525231083" source="id-1670c33b685b443580fb8b2440104941" target="id-b8da48dc656743d899908b39b7580d7e"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-aac1570eb4164af2846dc16c19275d7a" source="id-14246da5e4b141609f576351f22a4f8a" target="id-d5081770b7ab4f3ead5adf86ff3ccf0a"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-6ca50b5368fc407096eccdb147808a8d" source="id-7d99a2e680d3449cba44e64741a5b4ed" target="id-d5081770b7ab4f3ead5adf86ff3ccf0a"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-a3cffe348cf5413fa8336d2454b0a6e0" source="id-d5730e32461f42bca76887a45e725436" target="id-21ce0bc6b475467cb27ba2ca6f215407"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-f9e722ccd279435fb09526f73df72938" source="id-5f7ad3fcd38b42cf8ed9ac7dfeaa2b94" target="id-21ce0bc6b475467cb27ba2ca6f215407"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-40dacd16bd4d4db9ba6589a0223badba" source="id-ddb3c6aaf5504432bddf02e3822cdbae" target="id-b46ae8eab3ec468da7be190cf8b4f685"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-8a0ab7b8536c4f76a6fbf9160468392b" source="id-aaad47bed5464c2f8ed66420747a5491" target="id-b46ae8eab3ec468da7be190cf8b4f685"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-2ab4b6e6dfd244979b8beb448bb3435f" source="id-d0e2c360169d4e088ab05445e9ee3100" target="id-b46ae8eab3ec468da7be190cf8b4f685"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-1d916dee536a401d9149503ab851131c" source="id-476c2d1d46064d92b7aa84d1f30ee833" target="id-b46ae8eab3ec468da7be190cf8b4f685"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-58143647d68c4c1db5588ed0446708da" source="id-be6f1979a6ea4993a5aa2d79174f0976" target="id-71a6a42f10ee493d9731888f593e42dd"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-7fc0d821615b474b8dbc31addb8058f5" source="id-be6f1979a6ea4993a5aa2d79174f0976" target="id-ef731f906321488a8a4640f649100bb6"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-e8d8afc1e953491088873a395798a763" source="id-be6f1979a6ea4993a5aa2d79174f0976" target="id-63ec96c082de468b87fa7c65466c48ba"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-bd856e8044e14580b8f32a1c9d1a8fb9" source="id-be6f1979a6ea4993a5aa2d79174f0976" target="id-95d142287eef45e188791cc3c38ad7a1"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-7e7ea664b0364bf380fc9c7052bf90b8" source="id-7d99a2e680d3449cba44e64741a5b4ed" target="id-95d142287eef45e188791cc3c38ad7a1"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-8d763dd24dbb43d89b7a644a02913cc3" source="id-b46ae8eab3ec468da7be190cf8b4f685" target="id-a7d586545c5c48d599bfa07177ccdba6"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-4fc2a0f155c34d3aba3c1bf77011885c" source="id-b46ae8eab3ec468da7be190cf8b4f685" target="id-6092cbbc95034038bf631e55ec80c4f8"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-0ef983f56b15466b9701986c62877f7e" source="id-b46ae8eab3ec468da7be190cf8b4f685" target="id-66e8411f078342b39d54201abff99ca3"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-e9ba5f4487284704b63fb83e5e7c9943" source="id-b46ae8eab3ec468da7be190cf8b4f685" target="id-cc90e10548ef4b699ded8e2ec7ff615f"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-b2c180c53d544dd6ab5bb23baec7aa0d" source="id-b46ae8eab3ec468da7be190cf8b4f685" target="id-1c05f64ed501473da11bcacec0c7c9a4"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-ba37866460a74bd09291a55ffff48081" source="id-b46ae8eab3ec468da7be190cf8b4f685" target="id-d14a91623a5c41f0bbba7a251f2e2eb3"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-a9f83c21b30a4974ab2354bd3e001c56" source="id-1670c33b685b443580fb8b2440104941" target="id-ef731f906321488a8a4640f649100bb6"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-598ec1d743764791ac236d4c6df918e3" source="id-b6df921f08254f1fbb00938b31407a47" target="id-2f6a2cbbf0fc48508a9538af3c2cdd00"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-1c5c552c45fc40bd9df1be006d787136" source="id-b6df921f08254f1fbb00938b31407a47" target="id-d0d6dafeb263418b9f5e8ab14d2ab953"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-0a0c367c597b4521a93474f1c4f67699" source="id-b6df921f08254f1fbb00938b31407a47" target="id-385d4797da6343af85511e9bd1c551fd"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-0dbf6eb0e9794a7ba7fedc7057b60b6c" source="id-b6df921f08254f1fbb00938b31407a47" target="id-7a6c954d72cb4fa791b16d84c2901ee1"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-1e20d4a0e7b04802b980a66c8e0e356d" source="id-b6df921f08254f1fbb00938b31407a47" target="id-cdd5b9e46a634807bf3a1efa8c936ba0"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-f41e5963275e4b87ad4360c441a4ed08" source="id-b6df921f08254f1fbb00938b31407a47" target="id-d14a91623a5c41f0bbba7a251f2e2eb3"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-e83b82a8b2a5490a8d95d5dc2764c4a6" source="id-a03edd2ffc9d4f44afcc37ca156f7751" target="id-1fe7e0e7051249c2ae617888444bf892"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-b25f790f3b74443cb5216ceb49c5226b" source="id-bb8620fc1d014df6bcf9d7611a0ac8bf" target="id-3a05118ff6c944b3a732ac6e8387c1d6"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-180ac58e825849d0b3481ea1f7c7df81" source="id-bb8620fc1d014df6bcf9d7611a0ac8bf" target="id-f0234489da164dba8b883be8994e62ca"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-deafd3f2789442cb8251905276a00eb0" source="id-0f77c520c7ed4f028c4b3ca6896dfc49" target="id-f0234489da164dba8b883be8994e62ca"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-d948405419cc4199a564c7d3c73866a3" source="id-ddb3c6aaf5504432bddf02e3822cdbae" target="id-d5081770b7ab4f3ead5adf86ff3ccf0a"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-8cc2e9179dae4b6fb8b1da5e13c9a7ed" source="id-aaad47bed5464c2f8ed66420747a5491" target="id-5317d912b1b04d7c96f498144cf195c5"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-a4422c48428c45ae8d804e6398301559" source="id-d0e2c360169d4e088ab05445e9ee3100" target="id-f0234489da164dba8b883be8994e62ca"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-19a039749e9a4ab09eb9ee5990f1d2e6" source="id-845cbcad40e64f9eb4ccf11d02ffdf3f" target="id-f0234489da164dba8b883be8994e62ca"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-0c1e652927d44d4b9b3d0c9e6e5be430" source="id-845cbcad40e64f9eb4ccf11d02ffdf3f" target="id-21ce0bc6b475467cb27ba2ca6f215407"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-bc8b4db132194f3f859e06c35415ac0c" source="id-476c2d1d46064d92b7aa84d1f30ee833" target="id-5317d912b1b04d7c96f498144cf195c5"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-b8ed5cdf4e2e4a4dbfdcbf284ad3ae6c" source="id-9a74be1fa82941deb59159fba8855f74" target="id-ddb3c6aaf5504432bddf02e3822cdbae"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-7911dac878294edba3f6724da4d26141" source="id-d9c8f3385e6245ac80ddf4b1ab753f5c" target="id-aaad47bed5464c2f8ed66420747a5491"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-7f6da98f1b3340f7aa347ab18a53910b" source="id-1aad3e77f15a482c914de18a5afba45e" target="id-d0e2c360169d4e088ab05445e9ee3100"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-059f9dd74f764f85bba1529c2c980d0a" source="id-8b35faa8fcb64f45964fec14759e74fa" target="id-476c2d1d46064d92b7aa84d1f30ee833"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-7decf123ec5b4b6b82c6337f58894d95" source="id-5f7ad3fcd38b42cf8ed9ac7dfeaa2b94" target="id-cdd5b9e46a634807bf3a1efa8c936ba0"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-69f11b45b1b2451dbd677a22ed057fb5" source="id-5f7ad3fcd38b42cf8ed9ac7dfeaa2b94" target="id-d14a91623a5c41f0bbba7a251f2e2eb3"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-cc2a839b826145d59169bcfededd19f1" source="id-5f7ad3fcd38b42cf8ed9ac7dfeaa2b94" target="id-d68ff55f8b814a8ea073d6d385d26dde"/>
   </folder>
   <folder name="Views" id="id-2de7416fbb1b426d835b9882eac3b061" type="diagrams">
     <element xsi:type="archimate:ArchimateDiagramModel" name="01 - AARM Enterprise Motivation" id="id-b3e1a1cc5e7e4c61a2bf35caccc7c681">
