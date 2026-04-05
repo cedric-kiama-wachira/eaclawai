@@ -13,3 +13,17 @@ platform/certificates/*.pem
 # Archi tool temp files
 *.archimate.bak
 .archimate-lock
+
+# EA artifact cleanup — intermediate files
+docs/architecture/audit/
+docs/architecture/scripts/*_DEBUG_*.ajs
+docs/architecture/scripts/*_RESEARCH_*.ajs
+docs/architecture/scripts/test-*.ajs
+docs/architecture/scripts/diagnostic-*.ajs
+
+# Keep production scripts and documentation:
+# - docs/architecture/adrs/*.md
+# - docs/architecture/sads/*.md
+# - docs/architecture/models/AARM.archimate
+# - docs/architecture/scripts/0[8-9]_*.ajs
+# - docs/architecture/scripts/1[0-9]_*.ajs
